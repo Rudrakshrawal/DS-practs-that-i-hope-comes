@@ -77,23 +77,102 @@ int maxnum(struct Node *p){
 }
 
 // Linear srearch 
-struct Node * LSearch(struct Node *p, int key){
-  while (p!=NULL){
-      if(key==p->data)
-        return p;
-      p=p->next;
-  }
-  return NULL;
+struct Node* rSearch(struct Node *p, int key) {
+    if(p==NULL){
+        printf("Data not available\n");
+        return NULL;}
+    if(key==p->data)
+       { printf("The data is found" );
+        return p;}
+    return rSearch(p->next,key);
 }
+
+
+
 //Recursive Linear search
+struct Node* rSearch(struct Node *p, int key) {
+    if(p==NULL){
+        printf("Data not available\n");
+        return NULL;}
+    if(key==p->data)
+        printf("The data is found" );
+        return p;
+    return rSearch(p->next,key);
+}
 //Inserting an element at last
-//Sorted linked list
+void Insert(struct Node *p, int index, int x) {
+    struct Node *t;
+    
+    // Validate index
+    if(index < 0 || index > Rcount(p))
+        return;
+    
+    t = (struct Node *)malloc(sizeof(struct Node));
+    t->data = x;
+    
+    // Insert at the beginning
+    if(index == 0) {
+        t->next = first;
+        first = t;
+    }
+    else {
+        for(int i = 0; i < index - 1; i++)
+            p = p->next;
+        
+        t->next = p->next;
+        p->next = t;
+    }
+}
+
+//Adding a new node
+void Append(struct Node *p, int x) {
+    struct Node *t = (struct Node *)malloc(sizeof(struct Node));
+    t->data = x;
+    t->next = NULL;
+
+    // If the list is empty
+    if (first == NULL) {
+        first = t;
+        return;
+    }
+
+    // Traverse to the end of the list
+    while (p->next != NULL) {
+        p = p->next;
+    }
+
+    p->next = t;
+}
+
+
 //deleting
-//removing duplicates
-//reversing LL
-// concatenating
-//doubly LL
-//comparision
+int Delete(struct Node *p,int index)
+{
+    struct Node *q=NULL;
+    int x=-1,i;
+    if(index < 1 || index > count(p))
+        return -1;
+    if(index==1)
+    {
+        q=first;
+        x=first->data;
+        first=first->next;
+        free(q);
+        return x;
+        }
+    else
+    {
+        for(i=0;i<index-1;i++)
+            {
+            q=p;
+            p=p->next;
+            }
+    q->next=p->next;
+    x=p->data;
+    free(p);
+    return x;}
+    }
+
 
 int main(){
     int A[] = {3,2,56,6,3,6,2,6,2,9};
@@ -106,15 +185,16 @@ int main(){
     printf("The sun of all the elements is: %d\n",Rsum(first));
     printf("the max number is : %d\n", maxnum(first));
 
-        // foR LSearch
-    struct Node *temp; // A temp node 
-    temp=LSearch(first,3);
-    if(temp)
-        printf("Key is Found %d\n", temp->data);
-    else
-        printf("Key is not found");
+    //for search
+    LSearch(first,3);
+    rSearch(first,3);
 
-  
+    //for adding an element
+    Insert(first, 0, 5);
+    display(first);
+
+    Append(first, 243);
+    Delete(first,3);
     return 0;
     }
 
