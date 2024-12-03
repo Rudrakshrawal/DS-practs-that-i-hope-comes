@@ -1,108 +1,104 @@
 #include <iostream>
 using namespace std;
-#define MAX 10
 
-struct Node 
-{
-   int data;
-   Node* next;
+// Node structure for the stack
+struct Node {
+    int data;
+    Node* next;
+
+    Node(int value) : data(value), next(nullptr) {}
 };
 
-class Stack
-{
-    private : 
-    
-    Node* top;
+// Stack ADT using Linked List
+class Stack {
+private:
+    Node* top; // Points to the top of the stack
 
-    public :
+public:
+    // Constructor
     Stack() : top(nullptr) {}
 
-    ~Stack()
-    {
-        while (!isEmpty())
-        {
+    // Method to check if the stack is empty
+    bool isEmpty() {
+        return top == nullptr;
+    }
+
+    // Method to push a value onto the stack
+    void push(int value) {
+        Node* newNode = new Node(value);
+        newNode->next = top;
+        top = newNode;
+        cout << "Pushed " << value << " onto the stack." << endl;
+    }
+
+    // Method to pop a value from the stack
+    int pop() {
+        if (isEmpty()) {
+            cout << "Stack underflow! Cannot pop from an empty stack." << endl;
+            return -1;
+        }
+        int poppedValue = top->data;
+        Node* temp = top;
+        top = top->next;
+        delete temp;
+        return poppedValue;
+    }
+
+    // Method to peek at the top of the stack
+    int peek() {
+        if (isEmpty()) {
+            cout << "Stack is empty! Nothing to peek." << endl;
+            return -1;
+        }
+        return top->data;
+    }
+
+    // Method to display the stack elements
+    void display() {
+        if (isEmpty()) {
+            cout << "Stack is empty!" << endl;
+            return;
+        }
+        Node* temp = top;
+        cout << "Stack elements: ";
+        while (temp != nullptr) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    // Destructor to clean up memory
+    ~Stack() {
+        while (!isEmpty()) {
             pop();
         }
     }
-
-    bool isEmpty()
-    {
-        return top == nullptr;
-    }
-    
-    void push(int data)
-    {
-       Node * newbie = (Node *)malloc(sizeof(Node)); //new Node()
-       newbie->data = data;
-       newbie->next = top;
-       top = newbie;
-    }
-
-    void pop()
-    {
-        if (isEmpty())
-        {
-            cout << "Stack is empty, nothing to pop!!!" << endl;
-        }
-        Node* temp = top;
-        top = top->next; 
-        delete temp;  
-    }
-
-
-    int peek()
-    {
-        if (!isEmpty())
-        {
-            return top->data;
-        }
-        else return -1;
-    }
-
-    void display() 
-    {
-        if (isEmpty()) 
-        {
-            printf("Stack is empty\n");
-        } 
-        else 
-        {
-            Node * temp = top;
-            while (temp != NULL)
-            {
-                cout << temp->data << " ";
-                temp = temp->next;
-            }
-            printf("\n");
-        }
-    }
-
 };
 
-int main()
-{
-    Stack s;
+int main() {
+    Stack stack;
 
-    s.push(10);
-    s.push(20);
-    s.push(100);
+    // Push elements onto the stack
+    stack.push(10);
+    stack.push(20);
+    stack.push(30);
 
-    cout << "Stack after push operations: ";
-    s.display();
+    // Display stack elements
+    stack.display();
 
-    cout << "Top element (peek): " << s.peek() << endl;
+    // Peek the top element
+    cout << "Top element is: " << stack.peek() << endl;
 
-    s.pop(); // Pop the top element
-    cout << "Stack after pop operation: ";
-    s.display();
+    // Pop elements from the stack
+    cout << "Popped: " << stack.pop() << endl;
+    cout << "Popped: " << stack.pop() << endl;
 
-    s.pop(); // Pop another element
-    cout << "Stack after another pop operation: ";
-    s.display();
+    // Display stack elements after popping
+    stack.display();
 
-    cout << "Top element (peek) after pops: " << s.peek() << endl;
+    // Pop from an empty stack
+    stack.pop();
 
-    s.pop(); // Pop the last element
-    cout << "Stack after popping last element: ";
-    s.display();
+    return 0;
 }
